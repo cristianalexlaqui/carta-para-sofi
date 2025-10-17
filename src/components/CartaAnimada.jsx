@@ -111,11 +111,11 @@ export default function CartaAnimada() {
           key={i}
           src={`${BASE_PATH}/peonia.png`}
           alt="peonia"
-          className="absolute w-7 opacity-70" // Peonías más pequeñas
+          className="absolute w-4 opacity-70" // Peonías más pequeñas
           initial={{ y: -100, x: `${Math.random() * 100}vw` }}
           animate={{
             y: "110vh",
-            x: `${Math.random() * 100}vw`,
+            x: `${25 + Math.random() * 50}vw`,
             rotate: Math.random() * 360,
           }}
           transition={{
@@ -134,7 +134,7 @@ export default function CartaAnimada() {
           {frases.map((frase, index) => (
             <motion.p
               key={index}
-              className="text-3xl md:text-4xl text-white font-[Great_Vibes] leading-relaxed italic mx-auto" // Centrado y tamaño de fuente aumentado
+              className="text-5xl md:text-4xl text-white font-[Great_Vibes] leading-relaxed italic mx-auto" // Centrado y tamaño de fuente aumentado
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.8 }} 
@@ -149,7 +149,7 @@ export default function CartaAnimada() {
         <motion.img
           src={`${BASE_PATH}/foto_sofi.jpg`}
           alt="Nosotros"
-          className="rounded-full shadow-2xl w-40 h-40 md:w-56 md:h-56 object-cover border-4 border-pink-300/50 mb-16 mx-auto" // Imagen más pequeña y centrada
+          className="rounded-full shadow-2xl w-24 h-24 md:w-44 md:h-44 object-cover border-4 border-pink-300/50 mb-16 mx-auto" // Imagen más pequeña y centrada
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.8 }} 

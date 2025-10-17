@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function CartaAnimada() {
-  const [audio1] = useState(() => new Audio("/mujhse_dosti_karoge.mp3"));
-  const [audio2] = useState(() => new Audio("/sea_of_dreams.mp3"));
+  const [audio1] = useState(() => new Audio(import.meta.env.BASE_URL + "mujhse_dosti_karoge.mp3"));
+  const [audio2] = useState(() => new Audio(import.meta.env.BASE_URL + "sea_of_dreams.mp3"));
   const [playing, setPlaying] = useState(true);
   const [showSecond, setShowSecond] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const frases = [
     "Desde que llegaste a mi vida, cada día se volvió un poco más bonito…",
@@ -17,32 +16,34 @@ export default function CartaAnimada() {
     "Gracias por existir, amor.",
   ];
 
-  const peonias = Array.from({ length: 20 });
+  // ✅ Generar peonías con valores al azar una sola vez
+  const [peonias] = useState(
+    Array.from({ length: 15 }, () => ({
+      x: Math.random() * window.innerWidth,
+      delay: Math.random() * 5,
+      duration: 10 + Math.random() * 10,
+      rotation: Math.random() * 360,
+    }))
+  );
 
   useEffect(() => {
-    // ajustar volumen y reproducir solo cuando el usuario interactúa
-    const startMusic = () => {
-      audio1.volume = 0.5;
-      audio2.volume = 0.5;
-      audio1.play().catch(() => {}); // prevenir bloqueo del navegador
-      document.removeEventListener("click", startMusic);
-    };
-    document.addEventListener("click", startMusic);
+    audio1.volume = 0.5;
+    audio2.volume = 0.5;
+    audio1.loop = true;
+    audio2.loop = true;
 
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
+    audio1.play().catch(() => console.log("Reproducción bloqueada hasta interacción del usuario."));
 
     const transitionTimer = setTimeout(() => {
       setShowSecond(true);
       audio1.pause();
-      audio2.play().catch(() => {});
-    }, 70000); // cambia a la segunda canción después de 70s
+      audio2.play();
+    }, 70000); // cambia a los 70 segundos
 
     return () => {
       clearTimeout(transitionTimer);
       audio1.pause();
       audio2.pause();
-      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -51,8 +52,7 @@ export default function CartaAnimada() {
       audio1.pause();
       audio2.pause();
     } else {
-      if (showSecond) audio2.play().catch(() => {});
-      else audio1.play().catch(() => {});
+      (showSecond ? audio2 : audio1).play();
     }
     setPlaying(!playing);
   };
@@ -63,40 +63,39 @@ export default function CartaAnimada() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#222_1px,transparent_1px)] [background-size:20px_20px]" />
 
       {/* Lluvia de peonías */}
-      {peonias.map((_, i) => (
+      {peonias.map((p, i) => (
         <motion.img
           key={i}
-          src="/peonia.png"
+          src={import.meta.env.BASE_URL + "peonia.png"}
           alt="peonia"
-          className="absolute w-12 opacity-70"
-          initial={{ y: -100, x: Math.random() * screenWidth, rotate: 0 }}
+          className="absolute w-12 md:w-16 opacity-70"
+          initial={{ y: -100, x: p.x }}
           animate={{
             y: "110vh",
-            rotate: Math.random() * 360,
-            x: Math.random() * screenWidth,
+            rotate: p.rotation,
           }}
           transition={{
-            duration: 10 + Math.random() * 10,
+            duration: p.duration,
             repeat: Infinity,
-            delay: Math.random() * 5,
+            delay: p.delay,
           }}
         />
       ))}
 
-      {/* Imagen central */}
+      {/* Imagen de fondo difuminada */}
       <img
-        src="/foto_sofi.jpg"
+        src={import.meta.env.BASE_URL + "foto_sofi.jpg"}
         alt="Nosotros"
-        className="absolute inset-0 w-full h-full object-cover opacity-25 blur-sm"
+        className="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm"
       />
 
-      {/* Frases animadas centradas */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 space-y-8">
+      {/* Frases centradas */}
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 space-y-10">
         {frases.map((frase, index) => (
           <motion.p
             key={index}
             className="text-3xl md:text-5xl text-white font-[Great_Vibes]"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 6, duration: 2 }}
           >
@@ -105,10 +104,10 @@ export default function CartaAnimada() {
         ))}
       </div>
 
-      {/* Botón de pausa */}
+      {/* Botón de pausa/reproducir */}
       <button
         onClick={togglePlay}
-        className="absolute top-5 right-5 bg-white/10 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm hover:bg-white/20 transition"
+        className="absolute top-6 right-6 bg-white/10 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm hover:bg-white/20 transition"
       >
         {playing ? "❚❚" : "▶️"}
       </button>
@@ -118,11 +117,12 @@ export default function CartaAnimada() {
         body {
           margin: 0;
           overflow: hidden;
-          background: black;
+          background-color: black;
         }
       `}</style>
     </div>
   );
 }
+
 
 

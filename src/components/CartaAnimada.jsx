@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-export default function App() {
+export default function CartaAnimada() {
   // Configuración de la base para GitHub Pages
+  // NOTA: Si cambiaste el nombre del repositorio, debes cambiarlo aquí también
   const BASE_PATH = "/carta-para-sofi";
 
   // Se inicializan los audios
@@ -32,7 +33,7 @@ export default function App() {
     audio1.play()
       .then(() => setPlaying(true))
       .catch(e => {
-        console.log("Autoplay bloqueado:", e);
+        // Si falla (lo más común), se prepara el overlay de 'Haz Clic'
         setPlaying(false);
       });
       
@@ -86,8 +87,8 @@ export default function App() {
 
   return (
     <div 
-        // Usamos h-screen para centrar verticalmente todo el contenido
-        className="relative min-h-screen w-full bg-black overflow-x-hidden text-white font-sans"
+        // Eliminamos h-screen para evitar que el contenido empuje la pantalla si es muy largo
+        className="relative w-full bg-black overflow-x-hidden text-white font-sans min-h-screen"
         onClick={handleInitialInteraction} // Captura el primer clic/toque
     >
       {/* Indicador de clic para iniciar si el autoplay falla */}
@@ -105,13 +106,13 @@ export default function App() {
       {/* Fondo estrellado */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#222_1px,transparent_1px)] [background-size:20px_20px]" />
 
-      {/* Lluvia de peonías (Tamaño más pequeño: w-4) */}
+      {/* Lluvia de peonías (TAMAÑO MÁS PEQUEÑO: w-4) */}
       {peonias.map((_, i) => (
         <motion.img
           key={i}
           src={`${BASE_PATH}/peonia.png`}
           alt="peonia"
-          className="absolute w-4 opacity-70" // Peonías más pequeñas
+          className="absolute w-4 opacity-70" // Peonías muy pequeñas
           initial={{ y: -100, x: `${Math.random() * 100}vw` }}
           animate={{
             y: "110vh",
@@ -126,8 +127,8 @@ export default function App() {
         />
       ))}
 
-      {/* Contenedor principal: Centrado Vertical y Horizontal */}
-      <div className="relative flex flex-col items-center justify-center min-h-screen z-10 py-12 px-4 md:px-12">
+      {/* Contenedor principal: Centrado Suave y con Scroll si es necesario */}
+      <div className="relative flex flex-col items-center justify-start z-10 pt-16 pb-24 px-4 md:px-12">
         
         {/* TITULO PRINCIPAL */}
         <motion.h1
@@ -140,11 +141,11 @@ export default function App() {
         </motion.h1>
 
         {/* Frases románticas (CENTRADO y compacto) */}
-        <div className="flex flex-col space-y-12 items-center text-center w-full max-w-4xl"> {/* Espacio reducido a space-y-12 */}
+        <div className="flex flex-col space-y-8 items-center text-center w-full max-w-4xl"> {/* Espacio reducido a space-y-8 */}
           {frases.map((frase, index) => (
             <motion.p
               key={index}
-              className="text-xl md:text-3xl text-white font-[Great_Vibes] leading-relaxed italic mx-auto p-2" // Texto ajustado para mejor visualización móvil
+              className="text-xl md:text-3xl text-white font-[Great_Vibes] leading-relaxed italic mx-auto p-2" // Texto ajustado
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.8 }} 
@@ -159,7 +160,7 @@ export default function App() {
         <motion.img
           src={`${BASE_PATH}/foto_sofi.jpg`}
           alt="Nosotros"
-          className="rounded-full shadow-2xl w-32 h-32 md:w-40 h-40 object-cover border-4 border-pink-300/50 mt-16 mx-auto" // Tamaño mucho más pequeño: w-32/h-32
+          className="rounded-full shadow-2xl w-32 h-32 md:w-36 h-36 object-cover border-4 border-pink-300/50 mt-16 mx-auto" // Tamaño más pequeño: w-32/h-32 y w-36/h-36
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.8 }} 
@@ -195,4 +196,5 @@ export default function App() {
     </div>
   );
 }
+
 

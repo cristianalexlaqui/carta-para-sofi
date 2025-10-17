@@ -14,6 +14,7 @@ export default function CartaAnimada() {
   const [currentSong, setCurrentSong] = useState(1); // 1 = audio1, 2 = audio2
   const [userInteracted, setUserInteracted] = useState(false); 
 
+  // --- TEXTO DINÁMICO CON EFECTO ---
   const frases = [
     "Desde que llegaste a mi vida, cada día se volvió un poco más bonito…",
     "Recuerdo nuestras llamadas, las risas hasta tarde, y la semana que pasé contigo: lo mejor…",
@@ -22,6 +23,32 @@ export default function CartaAnimada() {
     "Por ti, volvería a elegir este sueño una y otra vez.",
     "Gracias por existir, amor.",
   ];
+
+  // --- PÁRRAFO DE INTRODUCCIÓN ESTÁTICO (SOLICITADO POR EL USUARIO) ---
+  const introParagraph = (
+    <>
+      <p className="mb-2">
+        Desde que llegaste a mi vida, cada día se volvió un poquito más bonito.
+      </p>
+      <p className="mb-2">
+        A veces pienso en nuestras llamadas, en cómo el silencio se sentía
+        cómodo contigo, en cómo reíamos hasta tarde o simplemente hablábamos
+        de nada y de todo. Esa semana que estuve contigo, cuando viajé a verte,
+        fue una de las más bonitas que he vivido; ver tu sonrisa en persona,
+        sentir tu presencia real, me hizo entender cuánto significas para mí.
+      </p>
+      <p className="mb-2">
+        Hoy, que celebramos 4 meses, quiero que recuerdes que esto no es solo
+        una fecha. Es una promesa, un recordatorio de que estoy aquí, incluso
+        en la distancia, creyendo en nosotros, en todo lo que hemos aprendido y
+        en lo que aún nos espera. Quiero seguir creciendo contigo, seguir
+        aprendiendo, seguir amándote cada día un poco más.
+      </p>
+      <p className="text-pink-300">
+        Eres mi calma, mi caos bonito, y mi sueño despierto.💗
+      </p>
+    </>
+  );
 
   const peonias = Array.from({ length: 15 });
 
@@ -87,7 +114,6 @@ export default function CartaAnimada() {
 
   return (
     <div 
-        // Eliminamos la altura estricta y permitimos el flujo normal
         className="relative w-full bg-black overflow-x-hidden text-white font-sans"
         onClick={handleInitialInteraction} // Captura el primer clic/toque
     >
@@ -127,25 +153,46 @@ export default function CartaAnimada() {
         />
       ))}
 
-      {/* Contenedor principal: COMIENZA ARRIBA, VISIBLE AL 100% Y CENTRADO HORIZONTAL */}
-      <div className="relative flex flex-col items-center z-10 w-full pt-8 pb-24 px-4 md:px-12">
+      {/* Contenedor principal: VISIBILIDAD INMEDIATA (top-4 left-4) */}
+      <div className="absolute top-4 left-4 z-10 w-full max-w-sm md:max-w-lg"> 
         
-        {/* TITULO PRINCIPAL */}
+        {/* TITULO DE INICIO */}
         <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="text-3xl md:text-4xl text-pink-300 font-[Great_Vibes] mb-2 italic text-center w-full max-w-lg" 
+            transition={{ delay: 0.2, duration: 1 }}
+            className="text-2xl md:text-3xl text-pink-300 font-[Great_Vibes] mb-2 italic text-left" 
+        >
+            ✨ Para mi Sofi ✨
+        </motion.h1>
+        
+        {/* PÁRRAFO DE INTRODUCCIÓN (SE VE INMEDIATAMENTE) */}
+        <motion.div
+             initial={{ opacity: 0, x: -10 }}
+             animate={{ opacity: 1, x: 0 }}
+             transition={{ delay: 0.8, duration: 1 }}
+             className="text-sm md:text-base text-white/90 font-sans leading-relaxed mb-4"
+        >
+            {introParagraph}
+        </motion.div>
+
+        {/* TITULO SECUNDARIO (FELICES 4 MESES AMOR) */}
+        <motion.h2
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }} 
+            transition={{ delay: 0.3, duration: 1 }}
+            className="text-xl md:text-2xl text-pink-300 font-[Great_Vibes] mb-2 italic text-left mt-4" 
         >
             FELICES 4 MESES AMOR
-        </motion.h1>
+        </motion.h2>
 
-        {/* Frases románticas (CENTRADO y COMPACTO) */}
-        <div className="flex flex-col space-y-1 items-start w-full max-w-lg"> 
+        {/* Frases románticas (COMPACTO Y CON EFECTO) */}
+        <div className="flex flex-col space-y-1 items-start w-full"> 
           {frases.map((frase, index) => (
             <motion.p
               key={index}
-              className="text-base md:text-xl text-white font-[Great_Vibes] leading-snug italic p-0.5 mx-auto text-left" 
+              className="text-base md:text-lg text-white font-[Great_Vibes] leading-snug italic p-0.5 text-left" 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.8 }} 
@@ -156,11 +203,11 @@ export default function CartaAnimada() {
           ))}
         </div>
 
-        {/* Foto central destacada (al final, muy pequeña y centrada) */}
+        {/* Foto central destacada (al final, muy pequeña y alineada a la izquierda) */}
         <motion.img
           src={`${BASE_PATH}/foto_sofi.jpg`}
           alt="Nosotros"
-          className="rounded-lg shadow-xl w-20 h-20 md:w-28 h-28 object-cover border-4 border-pink-300/50 mt-6 mx-auto" 
+          className="rounded-lg shadow-xl w-20 h-20 md:w-28 h-28 object-cover border-4 border-pink-300/50 mt-4" 
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.8 }} 
@@ -168,7 +215,7 @@ export default function CartaAnimada() {
         />
         
         {/* Controles de Música (Alineados debajo de la foto) */}
-        <div className="flex space-x-2 mt-4 mx-auto">
+        <div className="flex space-x-2 mt-4">
             <button
               onClick={togglePlay}
               className="bg-white/10 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs hover:bg-white/20 transition"
@@ -184,13 +231,10 @@ export default function CartaAnimada() {
         </div>
       </div>
       
-      {/* Controles flotantes de la esquina superior derecha (movidos al contenedor principal) */}
-
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
         body {
           margin: 0;
-          /* Eliminamos overflow: hidden para que el texto fluya si es necesario */
           background-color: black;
         }
       `}</style>

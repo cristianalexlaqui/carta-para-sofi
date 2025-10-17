@@ -133,25 +133,28 @@ export default function CartaAnimada() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#222_1px,transparent_1px)] [background-size:20px_20px]" />
 
       {/* Lluvia de peonías (TAMAÑO MÁS PEQUEÑO: w-3) */}
-      {peonias.map((_, i) => (
-        <motion.img
-          key={i}
-          src={`${BASE_PATH}/peonia.png`}
-          alt="peonia"
-          className="absolute w-3 opacity-70" // Peonías al mínimo
-          initial={{ y: -100, x: `${Math.random() * 100}vw` }}
-          animate={{
-            y: "110vh",
-            x: `${Math.random() * 100}vw`,
-            rotate: Math.random() * 360,
-          }}
-          transition={{
-            duration: 15 + Math.random() * 10,
-            repeat: Infinity,
-            delay: Math.random() * 5,
-          }}
-        />
-      ))}
+      {/* CORRECCIÓN: Contenedor con overflow-hidden para eliminar el espacio superior */}
+      <div className="absolute inset-0 overflow-hidden">
+        {peonias.map((_, i) => (
+          <motion.img
+            key={i}
+            src={`${BASE_PATH}/peonia.png`}
+            alt="peonia"
+            className="absolute w-3 opacity-70" // Peonías al mínimo
+            initial={{ y: -100, x: `${Math.random() * 100}vw` }}
+            animate={{
+              y: "110vh",
+              x: `${Math.random() * 100}vw`,
+              rotate: Math.random() * 360,
+            }}
+            transition={{
+              duration: 15 + Math.random() * 10,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+            }}
+          />
+        ))}
+      </div>
 
       {/* Contenedor principal: VISIBILIDAD INMEDIATA (top-4 left-4) */}
       <div className="absolute top-4 left-4 z-10 w-full max-w-sm md:max-w-lg"> 

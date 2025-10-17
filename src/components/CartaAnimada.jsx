@@ -1,115 +1,156 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-export default function CartaAnimada() {
-  const [audio1] = useState(() => new Audio(import.meta.env.BASE_URL + "mujhse_dosti_karoge.mp3"));
-  const [audio2] = useState(() => new Audio(import.meta.env.BASE_URL + "sea_of_dreams.mp3"));
-  const [playing, setPlaying] = useState(true);
+export default function App() {
+  const [audio1] = useState(new Audio("/mujhse_dosti_karoge.mp3"));
+  const [audio2] = useState(new Audio("/sea_of_dreams.mp3"));
+  
+  const [playing, setPlaying] = useState(true); // Inicia en true para autoplay
   const [showSecond, setShowSecond] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false); // Para control de autoplay por navegador
 
   const frases = [
-    "Desde que llegaste a mi vida, cada día se volvió un poco más bonito…",
+    "Desde que llegaste a mi vida, cada día se volvió un poco más bonito.",
     "Recuerdo nuestras llamadas, las risas hasta tarde, y la semana que pasé contigo: lo mejor.",
     "A la distancia aprendimos que el amor se construye con intentos, con paciencia y con detalles.",
     "Si decides volver a intentarlo, prometo cuidarlo con la misma ternura con la que pienso en ti.",
-    "Por ti, volvería a elegir este sueño una y otra vez.",
-    "Gracias por existir, amor.",
+    "Por ti, volvería a elegir este sueño una y otra vez."
   ];
 
-  // ✅ Generar peonías con valores al azar una sola vez
-  const [peonias] = useState(
-    Array.from({ length: 15 }, () => ({
-      x: Math.random() * window.innerWidth,
-      delay: Math.random() * 5,
-      duration: 10 + Math.random() * 10,
-      rotation: Math.random() * 360,
-    }))
-  );
+  const peonias = Array.from({ length: 15 });
 
+  // Control de Audio (autoplay al inicio, si el navegador lo permite)
   useEffect(() => {
     audio1.volume = 0.5;
     audio2.volume = 0.5;
-    audio1.loop = true;
-    audio2.loop = true;
 
-    audio1.play().catch(() => console.log("Reproducción bloqueada hasta interacción del usuario."));
+    // Intentar reproducir el audio 1 al cargar
+    audio1.play()
+      .then(() => setPlaying(true)) // Si se reproduce, establecer playing a true
+      .catch(e => {
+        console.log("Autoplay de audio 1 bloqueado:", e);
+        setPlaying(false); // Si no se reproduce, establecer playing a false
+        // Mostrar un mensaje para que el usuario haga clic y active el audio
+      });
 
     const transitionTimer = setTimeout(() => {
       setShowSecond(true);
       audio1.pause();
-      audio2.play();
-    }, 70000); // cambia a los 70 segundos
+      // Intentar reproducir el audio 2
+      audio2.play().catch(e => console.log("Autoplay de audio 2 bloqueado:", e));
+    }, 70000); // 70s antes de cambiar canción
 
     return () => {
       clearTimeout(transitionTimer);
       audio1.pause();
       audio2.pause();
     };
-  }, []);
+  }, []); // Se ejecuta una sola vez al montar el componente
 
+  // Alternar pausa/play (ahora también gestiona el inicio manual si el autoplay falla)
   const togglePlay = () => {
     if (playing) {
       audio1.pause();
       audio2.pause();
     } else {
-      (showSecond ? audio2 : audio1).play();
+      // Si el autoplay falló, esto lo iniciará
+      if (showSecond) audio2.play().catch(() => {});
+      else audio1.play().catch(() => {});
     }
     setPlaying(!playing);
+    setUserInteracted(true); // Marcar que el usuario ya interactuó
+  };
+
+  // Manejar el clic en cualquier parte de la pantalla si el autoplay falla
+  const handleInitialInteraction = () => {
+    if (!userInteracted && !playing) {
+      // Si el audio no está reproduciéndose y el usuario no ha interactuado
+      audio1.play().catch(() => {});
+      setPlaying(true);
+      setUserInteracted(true);
+    }
   };
 
   return (
-    <div className="relative h-screen w-full bg-black overflow-hidden text-white font-sans">
+    <div 
+        className="relative h-screen w-full bg-black overflow-hidden text-white font-sans"
+        onClick={handleInitialInteraction} // Capturar el primer clic/toque
+    >
+      {/* Indicador de clic para iniciar si el autoplay falla */}
+      {!playing && !userInteracted && (
+          <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute inset-0 z-50 flex items-center justify-center bg-black/90 text-xl md:text-2xl text-pink-400 cursor-pointer"
+          >
+              Haz clic o toca la pantalla para iniciar la música y las animaciones...
+          </motion.div>
+      )}
+
       {/* Fondo estrellado */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#222_1px,transparent_1px)] [background-size:20px_20px]" />
 
       {/* Lluvia de peonías */}
-      {peonias.map((p, i) => (
+      {peonias.map((_, i) => (
         <motion.img
           key={i}
-          src={import.meta.env.BASE_URL + "peonia.png"}
+          src="/peonia.png" 
           alt="peonia"
-          className="absolute w-12 md:w-16 opacity-70"
-          initial={{ y: -100, x: p.x }}
+          className="absolute w-8 md:w-12 opacity-60" // Más pequeñas y responsive
+          initial={{ y: -100, x: `${Math.random() * 100}vw`, rotate: 0 }}
           animate={{
             y: "110vh",
-            rotate: p.rotation,
+            rotate: Math.random() * 360,
+            x: `${Math.random() * 100}vw`
           }}
           transition={{
-            duration: p.duration,
+            duration: 10 + Math.random() * 10,
             repeat: Infinity,
-            delay: p.delay,
+            delay: Math.random() * 5
           }}
+          style={{ left: `${Math.random() * 100}%` }}
         />
       ))}
 
-      {/* Imagen de fondo difuminada */}
+      {/* Imagen central */}
       <img
-        src={import.meta.env.BASE_URL + "foto_sofi.jpg"}
+        src="/foto_sofi.jpg"
         alt="Nosotros"
-        className="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                   w-64 h-64 md:w-96 md:h-96 object-cover opacity-20 blur-sm rounded-full" // Tamaños y centrado
       />
 
-      {/* Frases centradas */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 space-y-10">
+      {/* Frases animadas */}
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 md:px-20 space-y-4 md:space-y-8">
         {frases.map((frase, index) => (
           <motion.p
             key={index}
-            className="text-3xl md:text-5xl text-white font-[Great_Vibes]"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-xl md:text-4xl text-white font-[Great_Vibes] max-w-4xl" // Tamaño y centrado
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 6, duration: 2 }}
+            transition={{ delay: index * 6 + 3, duration: 2 }}
           >
             {frase}
           </motion.p>
         ))}
+        {/* Firma final (aparece después de todas las frases) */}
+        <motion.p
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: frases.length * 6 + 4, duration: 1.5 }}
+          className="text-lg md:text-3xl text-pink-400 font-[Great_Vibes] mt-8 md:mt-10" // Tamaño y margen
+        >
+          — Cristian
+        </motion.p>
       </div>
 
-      {/* Botón de pausa/reproducir */}
+      {/* Botón de pausa */}
       <button
         onClick={togglePlay}
-        className="absolute top-6 right-6 bg-white/10 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm hover:bg-white/20 transition"
+        className="absolute top-5 right-5 z-40 bg-white/10 backdrop-blur-md text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-sm md:text-base hover:bg-white/20 transition"
       >
-        {playing ? "❚❚" : "▶️"}
+        {playing ? "❚❚ Pausar" : "▶️ Reproducir"}
       </button>
 
       <style>{`
@@ -117,7 +158,9 @@ export default function CartaAnimada() {
         body {
           margin: 0;
           overflow: hidden;
-          background-color: black;
+          /* Asegurar que la altura del body sea la del viewport para h-screen */
+          height: 100vh; 
+          width: 100vw;
         }
       `}</style>
     </div>

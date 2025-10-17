@@ -87,7 +87,8 @@ export default function CartaAnimada() {
 
   return (
     <div 
-        className="relative w-full bg-black overflow-x-hidden text-white font-sans min-h-screen"
+        // Eliminamos la altura estricta y permitimos el flujo normal
+        className="relative w-full bg-black overflow-x-hidden text-white font-sans"
         onClick={handleInitialInteraction} // Captura el primer clic/toque
     >
       {/* Indicador de clic para iniciar si el autoplay falla */}
@@ -126,25 +127,25 @@ export default function CartaAnimada() {
         />
       ))}
 
-      {/* Contenedor principal: POSICIONADO EN ESQUINA SUPERIOR IZQUIERDA */}
-      <div className="absolute top-0 left-0 z-10 p-4 md:p-12 max-w-lg w-full"> 
+      {/* Contenedor principal: COMIENZA ARRIBA, VISIBLE AL 100% Y CENTRADO HORIZONTAL */}
+      <div className="relative flex flex-col items-center z-10 w-full pt-8 pb-24 px-4 md:px-12">
         
         {/* TITULO PRINCIPAL */}
         <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-3xl md:text-4xl text-pink-300 font-[Great_Vibes] mb-3 italic" 
+            className="text-3xl md:text-4xl text-pink-300 font-[Great_Vibes] mb-2 italic text-center w-full max-w-lg" 
         >
             FELICES 4 MESES AMOR
         </motion.h1>
 
         {/* Frases románticas (CENTRADO y COMPACTO) */}
-        <div className="flex flex-col space-y-1 items-start text-left w-full"> 
+        <div className="flex flex-col space-y-1 items-start w-full max-w-lg"> 
           {frases.map((frase, index) => (
             <motion.p
               key={index}
-              className="text-base md:text-xl text-white font-[Great_Vibes] leading-snug italic p-0.5" 
+              className="text-base md:text-xl text-white font-[Great_Vibes] leading-snug italic p-0.5 mx-auto text-left" 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.8 }} 
@@ -155,11 +156,11 @@ export default function CartaAnimada() {
           ))}
         </div>
 
-        {/* Foto central destacada (al final, muy pequeña y alineada a la izquierda) */}
+        {/* Foto central destacada (al final, muy pequeña y centrada) */}
         <motion.img
           src={`${BASE_PATH}/foto_sofi.jpg`}
           alt="Nosotros"
-          className="rounded-lg shadow-xl w-20 h-20 md:w-28 h-28 object-cover border-4 border-pink-300/50 mt-6" 
+          className="rounded-lg shadow-xl w-20 h-20 md:w-28 h-28 object-cover border-4 border-pink-300/50 mt-6 mx-auto" 
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.8 }} 
@@ -167,7 +168,7 @@ export default function CartaAnimada() {
         />
         
         {/* Controles de Música (Alineados debajo de la foto) */}
-        <div className="flex space-x-2 mt-4">
+        <div className="flex space-x-2 mt-4 mx-auto">
             <button
               onClick={togglePlay}
               className="bg-white/10 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs hover:bg-white/20 transition"
@@ -183,13 +184,13 @@ export default function CartaAnimada() {
         </div>
       </div>
       
-      {/* Botón de Pausa Flotante (Removido, ahora está junto al texto) */}
+      {/* Controles flotantes de la esquina superior derecha (movidos al contenedor principal) */}
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
         body {
           margin: 0;
-          overflow: hidden; /* ELIMINA EL SCROLL TOTALMENTE */
+          /* Eliminamos overflow: hidden para que el texto fluya si es necesario */
           background-color: black;
         }
       `}</style>

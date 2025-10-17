@@ -16,39 +16,25 @@ export default function CartaAnimada() {
 
   // --- TEXTO DINÁMICO CON EFECTO ---
   const frases = [
-    "Desde que llegaste a mi vida, cada día se volvió un poco más bonito…",
-    "Recuerdo nuestras llamadas, las risas hasta tarde, y la semana que pasé contigo: lo mejor…",
-    "A la distancia aprendimos que el amor se construye con intentos, con paciencia y con detalles.",
-    "Si decides volver a intentarlo, prometo cuidarlo con la misma ternura con la que pienso en ti.",
-    "Por ti, volvería a elegir este sueño una y otra vez.",
-    "Gracias por existir, amor.",
-  ];
+    "✨ Para mi Sofi ✨",
+    "Desde que llegaste a mi vida, cada día se volvió un poquito más bonito.",
+    // Frase larga 1, dividida con concatenación (+)
+    "Recuerdo nuestras llamadas, cómo el silencio se sentía cómodo contigo, " +
+    "las risas hasta tarde, y cómo hablábamos de nada y de todo. Pero, sin duda, " +
+    "esa semana que viajé a verte fue una de las más bonitas que he vivido; " +
+    "ver tu sonrisa en persona y sentir tu presencia real, me hizo entender " +
+    "la profundidad de lo que significas.",
 
-  // --- PÁRRAFO DE INTRODUCCIÓN ESTÁTICO (SOLICITADO POR EL USUARIO) ---
-  const introParagraph = (
-    <>
-      <p className="mb-2">
-        Desde que llegaste a mi vida, cada día se volvió un poquito más bonito.
-      </p>
-      <p className="mb-2">
-        A veces pienso en nuestras llamadas, en cómo el silencio se sentía
-        cómodo contigo, en cómo reíamos hasta tarde o simplemente hablábamos
-        de nada y de todo. Esa semana que estuve contigo, cuando viajé a verte,
-        fue una de las más bonitas que he vivido; ver tu sonrisa en persona,
-        sentir tu presencia real, me hizo entender cuánto significas para mí.
-      </p>
-      <p className="mb-2">
-        Hoy, que celebramos 4 meses, quiero que recuerdes que esto no es solo
-        una fecha. Es una promesa, un recordatorio de que estoy aquí, incluso
-        en la distancia, creyendo en nosotros, en todo lo que hemos aprendido y
-        en lo que aún nos espera. Quiero seguir creciendo contigo, seguir
-        aprendiendo, seguir amándote cada día un poco más.
-      </p>
-      <p className="text-pink-300">
-        Eres mi calma, mi caos bonito, y mi sueño despierto.💗
-      </p>
-    </>
-  );
+    // Frase larga 2, dividida con concatenación (+)
+    "Hoy, que celebramos 4 meses, quiero que sepas que esto no es solo una fecha. " +
+    "Es una promesa, un recordatorio de que sigo aquí, creyendo en nosotros, " +
+    "en todo lo que hemos aprendido y en lo que aún nos espera. " +
+    "Quiero seguir creciendo contigo, seguir amándote cada día un poco más, " +
+    "y construir ese futuro juntos.",
+
+    "Eres mi calma, mi caos bonito, y mi sueño despierto.",
+    "¡FELICES 4 MESES, AMOR! Gracias por existir. 💗",
+];
 
   const peonias = Array.from({ length: 15 });
 

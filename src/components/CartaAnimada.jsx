@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-export default function CartaAnimada() {
+export default function App() {
   // Configuración de la base para GitHub Pages
-  // Esto debe coincidir con el nombre de tu repositorio.
   const BASE_PATH = "/carta-para-sofi";
 
   // Se inicializan los audios
@@ -30,16 +29,13 @@ export default function CartaAnimada() {
     audio1.volume = 0.5;
     audio2.volume = 0.5;
 
-    // Intentar Autoplay de la primera canción (audio1)
     audio1.play()
       .then(() => setPlaying(true))
       .catch(e => {
-        // Si falla (lo más común), se prepara el overlay de 'Haz Clic'
         console.log("Autoplay bloqueado:", e);
         setPlaying(false);
       });
       
-    // Limpiar temporizadores y pausar al desmontar
     return () => {
       audio1.pause();
       audio2.pause();
@@ -85,8 +81,12 @@ export default function CartaAnimada() {
     }
   };
 
+  // Calcula el delay total para que la foto aparezca después de la última frase
+  const photoDelay = 0.3 + frases.length * 2.5 + 2;
+
   return (
     <div 
+        // Usamos h-screen para centrar verticalmente todo el contenido
         className="relative min-h-screen w-full bg-black overflow-x-hidden text-white font-sans"
         onClick={handleInitialInteraction} // Captura el primer clic/toque
     >
@@ -105,7 +105,7 @@ export default function CartaAnimada() {
       {/* Fondo estrellado */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#222_1px,transparent_1px)] [background-size:20px_20px]" />
 
-      {/* Lluvia de peonías (ajustadas a tamaño más pequeño y movimiento uniforme) */}
+      {/* Lluvia de peonías (Tamaño más pequeño: w-4) */}
       {peonias.map((_, i) => (
         <motion.img
           key={i}
@@ -115,7 +115,7 @@ export default function CartaAnimada() {
           initial={{ y: -100, x: `${Math.random() * 100}vw` }}
           animate={{
             y: "110vh",
-            x: `${25 + Math.random() * 50}vw`,
+            x: `${Math.random() * 100}vw`,
             rotate: Math.random() * 360,
           }}
           transition={{
@@ -126,34 +126,44 @@ export default function CartaAnimada() {
         />
       ))}
 
-      {/* Contenedor principal: Centrado y con scroll vertical */}
-      <div className="relative flex flex-col items-center justify-start z-10 space-y-20 py-16 md:py-24 px-4 md:px-12">
+      {/* Contenedor principal: Centrado Vertical y Horizontal */}
+      <div className="relative flex flex-col items-center justify-center min-h-screen z-10 py-12 px-4 md:px-12">
         
-        {/* Frases románticas (CENTRADO y con animación individual) */}
-        <div className="flex flex-col space-y-16 md:space-y-20 items-center text-center w-full max-w-4xl">
+        {/* TITULO PRINCIPAL */}
+        <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            className="text-5xl md:text-6xl text-pink-300 font-[Great_Vibes] text-center mb-10 md:mb-16 italic"
+        >
+            FELICES 4 MESES AMOR
+        </motion.h1>
+
+        {/* Frases románticas (CENTRADO y compacto) */}
+        <div className="flex flex-col space-y-12 items-center text-center w-full max-w-4xl"> {/* Espacio reducido a space-y-12 */}
           {frases.map((frase, index) => (
             <motion.p
               key={index}
-              className="text-5xl md:text-4xl text-white font-[Great_Vibes] leading-relaxed italic mx-auto" // Centrado y tamaño de fuente aumentado
+              className="text-xl md:text-3xl text-white font-[Great_Vibes] leading-relaxed italic mx-auto p-2" // Texto ajustado para mejor visualización móvil
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.8 }} 
-              transition={{ delay: 0.3 + index * 1.5, duration: 1.8 }} // Delay para el efecto de aparición secuencial
+              transition={{ delay: 0.3 + index * 2.5, duration: 1.8 }} 
             >
               {frase}
             </motion.p>
           ))}
         </div>
 
-        {/* Foto central destacada (al final, como cierre) */}
+        {/* Foto central destacada (al final, pequeña y centrada) */}
         <motion.img
           src={`${BASE_PATH}/foto_sofi.jpg`}
           alt="Nosotros"
-          className="rounded-full shadow-2xl w-24 h-24 md:w-44 md:h-44 object-cover border-4 border-pink-300/50 mb-16 mx-auto" // Imagen más pequeña y centrada
+          className="rounded-full shadow-2xl w-32 h-32 md:w-40 h-40 object-cover border-4 border-pink-300/50 mt-16 mx-auto" // Tamaño mucho más pequeño: w-32/h-32
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.8 }} 
-          transition={{ duration: 1.5, delay: frases.length * 1.5 + 2 }} // Aparece después de todas las frases
+          transition={{ duration: 1.5, delay: photoDelay }} 
         />
       </div>
 

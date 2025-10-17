@@ -3,10 +3,14 @@ import { motion } from "framer-motion";
 
 // Esta es la versión final, ajustada para diseño responsive y carga de assets.
 
-export default function App() {
+export default function CartaAnimada() {
+  // Configuración de la base para GitHub Pages (Debe coincidir con vite.config.js)
+  // Usaremos el nombre del repositorio como base para asegurar las rutas.
+  const BASE_PATH = "/carta-para-sofi"; // <--- NOMBRE DEL REPOSITORIO
+
   // Los nombres de archivo deben coincidir exactamente con los que están en la carpeta 'public'
-  const [audio1] = useState(new Audio("/mujhse_dosti_karoge.mp3"));
-  const [audio2] = useState(new Audio("/sea_of_dreams.mp3"));
+  const [audio1] = useState(new Audio(`${BASE_PATH}/mujhse_dosti_karoge.mp3`));
+  const [audio2] = useState(new Audio(`${BASE_PATH}/sea_of_dreams.mp3`));
   
   const [playing, setPlaying] = useState(true); 
   const [showSecond, setShowSecond] = useState(false);
@@ -98,7 +102,7 @@ export default function App() {
       {peonias.map((_, i) => (
         <motion.img
           key={i}
-          src="/peonia.png"
+          src={`${BASE_PATH}/peonia.png`}
           alt="peonia"
           className="absolute w-4 md:w-6 opacity-70" // Peonías más pequeñas
           initial={{ y: -100, x: `${Math.random() * 100}vw` }}
@@ -136,7 +140,7 @@ export default function App() {
 
         {/* Foto central destacada (al final, como cierre) */}
         <motion.img
-          src="/foto_sofi.jpg"
+          src={`${BASE_PATH}/foto_sofi.jpg`}
           alt="Nosotros"
           className="rounded-full shadow-2xl w-48 h-48 md:w-64 md:h-64 object-cover border-4 border-pink-300/50 mb-16"
           initial={{ opacity: 0, scale: 0.5 }}
@@ -166,3 +170,4 @@ export default function App() {
     </div>
   );
 }
+

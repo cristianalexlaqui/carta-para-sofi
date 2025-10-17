@@ -87,8 +87,8 @@ export default function CartaAnimada() {
 
   return (
     <div 
-        // Restauramos el centrado vertical estricto para eliminar el scroll inicial
-        className="relative w-full bg-black overflow-x-hidden text-white font-sans min-h-screen"
+        // Eliminamos min-h-screen del div principal
+        className="relative w-full bg-black overflow-x-hidden text-white font-sans"
         onClick={handleInitialInteraction} // Captura el primer clic/toque
     >
       {/* Indicador de clic para iniciar si el autoplay falla */}
@@ -127,25 +127,25 @@ export default function CartaAnimada() {
         />
       ))}
 
-      {/* Contenedor principal: CENTRADO VERTICAL Y HORIZONTAL */}
-      <div className="relative flex flex-col items-center justify-center min-h-screen z-10 px-4 md:px-12">
+      {/* Contenedor principal: COMIENZA ARRIBA Y CENTRADO HORIZONTAL */}
+      <div className="relative flex flex-col items-center z-10 px-4 md:px-12 pt-12 pb-24">
         
         {/* TITULO PRINCIPAL */}
         <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-5xl md:text-6xl text-pink-300 font-[Great_Vibes] text-center mb-4 italic" // Espacio reducido
+            className="text-5xl md:text-6xl text-pink-300 font-[Great_Vibes] text-center mb-4 italic" 
         >
             FELICES 4 MESES AMOR
         </motion.h1>
 
         {/* Frases románticas (CENTRADO y COMPACTO) */}
-        <div className="flex flex-col space-y-2 items-center text-center w-full max-w-4xl"> {/* Espacio reducido al mínimo */}
+        <div className="flex flex-col space-y-2 items-center text-center w-full max-w-4xl"> 
           {frases.map((frase, index) => (
             <motion.p
               key={index}
-              className="text-xl md:text-3xl text-white font-[Great_Vibes] leading-snug italic mx-auto p-1" // Texto ajustado y relleno reducido
+              className="text-xl md:text-3xl text-white font-[Great_Vibes] leading-snug italic mx-auto p-1" 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.8 }} 
@@ -160,7 +160,7 @@ export default function CartaAnimada() {
         <motion.img
           src={`${BASE_PATH}/foto_sofi.jpg`}
           alt="Nosotros"
-          className="rounded-full shadow-2xl w-20 h-20 md:w-28 h-28 object-cover border-4 border-pink-300/50 mt-8 mx-auto" // Reducida al mínimo
+          className="rounded-full shadow-2xl w-20 h-20 md:w-28 h-28 object-cover border-4 border-pink-300/50 mt-8 mx-auto" 
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.8 }} 

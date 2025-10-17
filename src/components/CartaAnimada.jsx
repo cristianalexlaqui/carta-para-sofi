@@ -87,8 +87,7 @@ export default function CartaAnimada() {
 
   return (
     <div 
-        // Eliminamos min-h-screen del div principal
-        className="relative w-full bg-black overflow-x-hidden text-white font-sans"
+        className="relative w-full bg-black overflow-x-hidden text-white font-sans min-h-screen"
         onClick={handleInitialInteraction} // Captura el primer clic/toque
     >
       {/* Indicador de clic para iniciar si el autoplay falla */}
@@ -127,27 +126,27 @@ export default function CartaAnimada() {
         />
       ))}
 
-      {/* Contenedor principal: COMIENZA ARRIBA Y CENTRADO HORIZONTAL */}
-      <div className="relative flex flex-col items-center z-10 px-4 md:px-12 pt-12 pb-24">
+      {/* Contenedor principal: POSICIONADO EN ESQUINA SUPERIOR IZQUIERDA */}
+      <div className="absolute top-0 left-0 z-10 p-4 md:p-12 max-w-lg w-full"> 
         
         {/* TITULO PRINCIPAL */}
         <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-5xl md:text-6xl text-pink-300 font-[Great_Vibes] text-center mb-4 italic" 
+            className="text-3xl md:text-4xl text-pink-300 font-[Great_Vibes] mb-3 italic" 
         >
             FELICES 4 MESES AMOR
         </motion.h1>
 
         {/* Frases románticas (CENTRADO y COMPACTO) */}
-        <div className="flex flex-col space-y-2 items-center text-center w-full max-w-4xl"> 
+        <div className="flex flex-col space-y-1 items-start text-left w-full"> 
           {frases.map((frase, index) => (
             <motion.p
               key={index}
-              className="text-xl md:text-3xl text-white font-[Great_Vibes] leading-snug italic mx-auto p-1" 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              className="text-base md:text-xl text-white font-[Great_Vibes] leading-snug italic p-0.5" 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.8 }} 
               transition={{ delay: 0.3 + index * 2.5, duration: 1.8 }} 
             >
@@ -156,33 +155,35 @@ export default function CartaAnimada() {
           ))}
         </div>
 
-        {/* Foto central destacada (al final, muy pequeña y centrada) */}
+        {/* Foto central destacada (al final, muy pequeña y alineada a la izquierda) */}
         <motion.img
           src={`${BASE_PATH}/foto_sofi.jpg`}
           alt="Nosotros"
-          className="rounded-full shadow-2xl w-20 h-20 md:w-28 h-28 object-cover border-4 border-pink-300/50 mt-8 mx-auto" 
+          className="rounded-lg shadow-xl w-20 h-20 md:w-28 h-28 object-cover border-4 border-pink-300/50 mt-6" 
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.8 }} 
           transition={{ duration: 1.5, delay: photoDelay }} 
         />
+        
+        {/* Controles de Música (Alineados debajo de la foto) */}
+        <div className="flex space-x-2 mt-4">
+            <button
+              onClick={togglePlay}
+              className="bg-white/10 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs hover:bg-white/20 transition"
+            >
+              {playing ? "❚❚ Pausar" : "▶️ Reproducir"}
+            </button>
+            <button
+              onClick={handleNextSong}
+              className="bg-white/10 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs hover:bg-white/20 transition"
+            >
+              {currentSong === 1 ? 'Siguiente' : 'Siguiente'}
+            </button>
+        </div>
       </div>
-
-      {/* Controles de Música */}
-      <div className="fixed top-5 right-5 flex space-x-2 z-20">
-        <button
-          onClick={togglePlay}
-          className="bg-white/10 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm hover:bg-white/20 transition"
-        >
-          {playing ? "❚❚ Pausar" : "▶️ Reproducir"}
-        </button>
-        <button
-          onClick={handleNextSong}
-          className="bg-white/10 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm hover:bg-white/20 transition"
-        >
-          {currentSong === 1 ? 'Siguiente (Sea of Dreams)' : 'Siguiente (Mujhse Dosti Karoge)'}
-        </button>
-      </div>
+      
+      {/* Botón de Pausa Flotante (Removido, ahora está junto al texto) */}
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
